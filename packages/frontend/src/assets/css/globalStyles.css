@@ -17,12 +17,12 @@ body {
 .v-card .v-image__image--cover {
     background-size: contain;
 }
-div.v-application button.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined){
+div.v-application button.v-btn:not(.v-btn--variant-flat):not(.v-btn--variant-text):not(.v-btn--variant-outline){
   background-color: var(--vscode-button-background, #0e639c);
   border-color: var(--vscode-button-background, #0e639c);
   border-radius: 0px;
 }
-div.v-application button.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) .v-btn__content{
+div.v-application button.v-btn:not(.v-btn--variant-flat):not(.v-btn--variant-text):not(.v-btn--variant-outline) .v-btn__content{
   color: var(--vscode-button-foreground, #ffffff);
 }
 
@@ -33,7 +33,7 @@ div.v-application .theme--light.v-btn.v-btn--disabled .v-icon {
   color: var(--vscode-button-foreground, #ffffff) !important;
 }
 
-.v-application button.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined):hover {
+.v-application button.v-btn:not(.v-btn--variant-flat):not(.v-btn--variant-text):not(.v-btn--variant-outline):hover {
   background-color: var(--vscode-button-hoverBackground, #1177bb);
   border-color: var(--vscode-button-hoverBackground, #1177bb);
 }
@@ -50,7 +50,7 @@ p.question-label{
   margin-bottom: 0.25rem ;
 }
 
-.theme--light.v-input input, .theme--light.v-input textarea,
+.v-theme--light.v-input input, .v-theme--light.v-input textarea,
 div.v-input__slot .v-select__selection,
 .v-input div label.v-label{
   color: var(--vscode-input-foreground, #cccccc) !important;
@@ -67,7 +67,7 @@ div.v-select-list div.v-list div.v-list-item:not(.v-list-item--active):not(.v-li
   color: var(--vscode-input-foreground, #cccccc) !important;
 }
 
-.v-list-item__title {
+.v-list-item-title {
   color: var(--vscode-dropdown-foreground);
 }
 
@@ -100,7 +100,7 @@ form.inquirer-gui .error-validation-text{
   color: #ff5252;
 }
 
-form.inquirer-gui i.theme--light.v-icon {
+form.inquirer-gui i.v-theme--light.v-icon {
   font-size: 20px;
   color: var(--vscode-foreground, #cccccc);
 }
@@ -117,6 +117,8 @@ form.inquirer-gui i.theme--light.v-icon {
 div.prompt-title {
   padding-left: 0px;
   padding-top: 0px;
+  overflow: visible;
+  text-wrap: initial;
 }
 
 form.inquirer-gui > *:not(.tiles) {
@@ -143,20 +145,20 @@ form.inquirer-gui div.v-list {
   background-color: var(--vscode-input-background, #3c3c3c);
 }
 
-div[role="listbox"].theme--light.v-list {
+div[role="listbox"].v-theme--light.v-list {
   background-color: var(--vscode-input-background, #3c3c3c);
 }
 
-div.theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
+div.v-theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
   color: var(--vscode-input-foreground, white) !important;
 }
 
 /* set checkbox and radio button icon color for inactive items */
-form.inquirer-gui .theme--light:not(.v-item--active) .v-icon {
+form.inquirer-gui .v-theme--light:not(.v-item--active) .v-icon {
   color: var(--vscode-input-foreground, white);
 }
 
-form.inquirer-gui div.theme--light.v-card.v-card--outlined {
+form.inquirer-gui div.v-theme--light.v-card.v-card--outlined {
   border-width: thin;
   border-style: solid;
   border-color: var(--vscode-panel-border, #cecece);
@@ -181,24 +183,26 @@ form.inquirer-gui .v-card.selected {
   background-color: var(--vscode-sideBar-background,#2a2d2e) ;
 }
 
-.explore-generators-cards .v-card__title,
-.explore-generators-cards .v-card__subtitle,
-form.inquirer-gui .v-card__title {
+.explore-generators-cards .v-card-title,
+.explore-generators-cards .v-card-subtitle,
+form.inquirer-gui .v-card-title {
   color: var(--vscode-foreground, #cccccc);
 }
 
-#prompt-info-component .v-card__subtitle {
+#prompt-info-component .v-card-subtitle {
+  color: var(--vscode-editor-foreground, #32363a);
+  opacity: 1;
+}
+
+form.inquirer-gui .v-card > div.v-card-text {
   color: var(--vscode-editor-foreground, #32363a);
 }
 
-form.inquirer-gui .v-card > div.v-card__text {
-  color: var(--vscode-editor-foreground, #32363a);
-}
-
-.v-application header.v-app-bar.v-toolbar {
+.v-application header.v-toolbar {
   border-bottom: 1px solid var(--vscode-titleBar-border,#d9d9d9);
 }
 
 .v-application .right-col [role=separator].v-divider {
   border-top: 1px solid var(--vscode-titleBar-border,#d9d9d9)!important; /* must !important other less accurate rule catches */
+  opacity: 1;
 }
