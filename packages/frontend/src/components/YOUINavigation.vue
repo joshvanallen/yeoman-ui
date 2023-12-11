@@ -1,89 +1,105 @@
 <template>
   <div>
-    <v-stepper v-model="currentStep" dark vertical>
-      <template v-for="index in steps">
+    <v-stepper :model-value="currentStep - 1">
+      <template v-for="index in steps" :key="index">
         <!-- Todo Check why there's an empty step -->
-        <v-stepper-step
-          :key="`${index}-step`"
-          :step="index"
+        <v-stepper-item
+          :editable="currentStep > index"
+          :title="prompts[index - 1] ? prompts[index - 1].name : ''"
           :complete="currentStep > index"
-          @click="gotoStep(currentStep - index)"
           :class="getStepClass(currentStep, index)"
-        >
-          {{ prompts[index - 1] ? prompts[index - 1].name : "" }}
-        </v-stepper-step>
-        <v-stepper-content :step="index" :key="`${index}-content`">
-          <Breadcrumbs
-            class="breadcrumbs"
+          @click="gotoStep(currentStep - index)"
+        />
+        <div class="breadcrumbs-container">
+          <YOUIBreadcrumbs
             :id="`breadcrumbs-${index}`"
+            class="breadcrumbs"
             :breadcrumbs="answers[prompts[index - 1] ? prompts[index - 1].name : undefined]"
           />
-        </v-stepper-content>
+        </div>
       </template>
     </v-stepper>
   </div>
 </template>
 
-<script>
-import Breadcrumbs from "../components/Breadcrumbs.vue";
-export default {
-  name: "Navigation",
-  components: {
-    Breadcrumbs,
+<script setup>
+import { computed, ref, toRefs, unref, watchEffect } from "vue";
+import YOUIBreadcrumbs from "../components/YOUIBreadcrumbs.vue";
+
+const props = defineProps({
+  promptIndex: {
+    type: Number,
+    default: 0,
   },
-  props: ["promptIndex", "prompts", "promptAnswers"],
-  data() {
-    return {
-      currentStep: 1,
-      steps: 1,
-      answers: {},
-    };
+  prompts: {
+    type: Array,
+    default: () => [],
   },
-  methods: {
-    getStepClass(currentStep, index) {
-      return {
-        "step-linkable": currentStep > index,
-      };
-    },
-    gotoStep(numOfSteps) {
-      // numOfSteps is number of steps to go back
-      if (numOfSteps > 0) {
-        this.$emit("onGotoStep", numOfSteps);
-      }
-    },
+  promptAnswers: {
+    type: Object,
+    default: () => {},
   },
-  watch: {
-    promptIndex(val) {
-      this.$nextTick(() => {
-        this.currentStep = val + 1;
-      });
-    },
-    prompts(val) {
-      this.steps = val.length;
-    },
-    promptAnswers(val = {}) {
-      if (val.promptName && val.answers) {
-        // Vue 2 requires a new object for reactivity to trigger updates
-        this.answers = Object.assign({}, this.answers, { [val.promptName]: val.answers });
-      }
-    },
-  },
+});
+
+const { promptIndex, prompts, promptAnswers } = toRefs(props);
+
+const emits = defineEmits(["onGotoStep"]);
+
+const answers = ref({});
+
+const currentStep = ref(0);
+
+const steps = computed(() => {
+  return unref(prompts).length;
+});
+
+watchEffect(() => {
+  currentStep.value = unref(promptIndex) + 1;
+});
+
+watchEffect(() => {
+  if (unref(promptAnswers) && unref(promptAnswers).promptName && unref(promptAnswers).answers) {
+    // Vue 2 requires a new object for reactivity to trigger updates
+    answers.value = Object.assign({}, unref(answers), {
+      [unref(promptAnswers).promptName]: unref(promptAnswers).answers,
+    });
+  }
+});
+
+const getStepClass = (currentStep, index) => {
+  return {
+    "step-linkable": currentStep > index,
+  };
 };
+const gotoStep = (index) => {
+  // numOfSteps is number of steps to go back
+  if (index > 0) {
+    emits("onGotoStep", index);
+  }
+};
+
+defineExpose({
+  gotoStep,
+  steps,
+  currentStep,
+  getStepClass,
+});
 </script>
 
 <style lang="scss">
-div.v-stepper div.v-stepper__step {
+div.v-stepper .v-stepper-item {
   padding-left: 0px;
   padding-top: 10px;
   padding-bottom: 10px;
+  opacity: unset;
   /* Step bullet  */
-  .v-stepper__step__step {
+  .v-stepper-item__avatar {
     font-size: 0px;
     background-color: transparent !important; // Required since  Vuetify `.v-application .primary` adds background-color !important
     color: var(--vscode-editor-foreground, #616161);
     border: 1px solid;
-    height: 12px;
-    width: 12px;
+    height: 12px !important;
+    width: 12px !important;
     min-width: 12px;
     margin-right: 10px;
     transition: 0.3s ease-in-out;
@@ -92,7 +108,7 @@ div.v-stepper div.v-stepper__step {
     }
   }
   /* Step label */
-  .v-stepper__label {
+  .v-stepper-item__title {
     font-weight: bold;
     font-size: 14px;
     line-height: 17px;
@@ -101,9 +117,10 @@ div.v-stepper div.v-stepper__step {
       #616161
     ) !important; // Required since Vuetify adds inline color for selector: `.theme--dark.v-stepper .v-stepper__label`
     transition: 0.3s ease-in-out;
+    text-align: left;
   }
   &--complete {
-    .v-stepper__label {
+    .v-stepper-item__title {
       color: var(
         --vscode-textLink-foreground,
         #3794ff
@@ -114,7 +131,7 @@ div.v-stepper div.v-stepper__step {
         text-decoration-line: none;
       }
     }
-    .v-stepper__step__step {
+    .v-stepper-item__avatar {
       background-color: var(
         --vscode-textLink-foreground,
         #3794ff
@@ -122,8 +139,8 @@ div.v-stepper div.v-stepper__step {
       border: none;
     }
   }
-  &--active {
-    .v-stepper__step__step {
+  &--selected {
+    .v-stepper-item__avatar {
       background-color: transparent !important;
       border-color: var(
         --vscode-editor-foreground,
@@ -132,8 +149,8 @@ div.v-stepper div.v-stepper__step {
     }
   }
   &--inactive {
-    .v-stepper__label,
-    .v-stepper__step__step {
+    .v-stepper-item__title,
+    .v-stepper-item__avatar {
       background-color: var(
         --vscode-editor-background,
         #252526
@@ -147,11 +164,11 @@ div.v-application {
   div.left-col {
     overflow-y: auto;
   }
-  div.v-stepper.v-stepper--vertical {
+  div.v-stepper {
     background-color: var(--vscode-editor-background, #252526);
     box-shadow: none;
     padding-top: 10px;
-    .v-stepper__content {
+    .breadcrumbs-container {
       margin-left: 5px;
       margin-bottom: 0px;
       margin-top: 0px;
