@@ -287,6 +287,11 @@ export default {
   background-color: var(--vscode-editor-background, #1e1e1e);
   color: var(--vscode-foreground, #cccccc);
 }
+
+.explore-generators .v-toolbar .v-btn {
+  /* Must be !important as vuetifey has !important in .text-primary */
+  color: var(--vscode-textLink-foreground, #3794ff) !important;
+}
 .explore-generators .v-toolbar {
   border-bottom: 1px solid var(--vscode-editorWidget-background, #252526);
   box-shadow: none;

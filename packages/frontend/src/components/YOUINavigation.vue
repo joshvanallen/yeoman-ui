@@ -91,6 +91,7 @@ div.v-stepper .v-stepper-item {
   padding-left: 0px;
   padding-top: 10px;
   padding-bottom: 10px;
+  opacity: unset;
   /* Step bullet  */
   .v-stepper-item__avatar {
     font-size: 0px;
@@ -116,6 +117,7 @@ div.v-stepper .v-stepper-item {
       #616161
     ) !important; // Required since Vuetify adds inline color for selector: `.theme--dark.v-stepper .v-stepper__label`
     transition: 0.3s ease-in-out;
+    text-align: left;
   }
   &--complete {
     .v-stepper-item__title {

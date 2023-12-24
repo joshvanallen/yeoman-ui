@@ -37,9 +37,15 @@ div.v-application .theme--light.v-btn.v-btn--disabled .v-icon {
   background-color: var(--vscode-button-hoverBackground, #1177bb);
   border-color: var(--vscode-button-hoverBackground, #1177bb);
 }
-/* Do not accept uppercase from vuetify */
+/* Do not accept uppercase from vuetify and no letter spacing */
 .v-btn {
-  text-transform: none;
+  text-transform: none !important;
+  letter-spacing: normal !important; 
+}
+
+/* All inputs should have this background color unless it is in radio group */
+form.inquirer-gui :not(.v-radio-group)>.v-input__control {
+  background-color: var(--vscode-input-background,#3c3c3c);
 }
 
 .v-btn--disabled {
@@ -105,6 +111,12 @@ form.inquirer-gui i.v-theme--light.v-icon {
   color: var(--vscode-foreground, #cccccc);
 }
 
+/* vuetify checkbox fill color */
+form.inquirer-gui i.v-theme--light.v-icon.mdi-radiobox-marked {
+  color: var(--vscode-focusBorder, #1976d2);
+}
+
+
 .mandatory-asterisk{
   font-size: 14px;
   color: #ff5252;
@@ -125,20 +137,24 @@ form.inquirer-gui > *:not(.tiles) {
   max-width: 66%;
 }
 
-form.inquirer-gui .v-text-field fieldset {
+form.inquirer-gui .v-field {
   border-radius: 0;
-  border-width: thin;
-  border-style: solid;
-  background-color: var(--vscode-input-background, #3c3c3c);
 }
 
-form.inquirer-gui :not(.v-input--is-focused).v-text-field fieldset {
+form.inquirer-gui .v-text-field input {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  /* like the previous padding - fix cursor aligned to the left*/
+  padding: 0 12px; 
   border-color: var(--vscode-panel-border, #cecece); 
-  /* TODO: replace with vscode-settings-textInputBorder when supported by Theia */
 }
 
-form.inquirer-gui .v-input--is-focused.v-text-field fieldset {
-  border-color: var(--vscode-focusBorder, rgba(0, 122, 204, 0.4));
+form.inquirer-gui .v-field--focused .v-field__outline {
+  color: var(--vscode-focusBorder, #1976d2);
+}
+
+form.inquirer-gui .v-field--variant-outlined.v-field--focused .v-field__outline {
+  --v-field-border-width: 1px;
 }
 
 form.inquirer-gui div.v-list {
@@ -158,7 +174,7 @@ form.inquirer-gui .v-theme--light:not(.v-item--active) .v-icon {
   color: var(--vscode-input-foreground, white);
 }
 
-form.inquirer-gui div.v-theme--light.v-card.v-card--outlined {
+form.inquirer-gui div.v-theme--light.v-card.v-card--variant-outlined {
   border-width: thin;
   border-style: solid;
   border-color: var(--vscode-panel-border, #cecece);
@@ -173,6 +189,8 @@ form.inquirer-gui div.theme--light.v-input textarea {
 
 form.inquirer-gui .v-card {
   background-color: var(--vscode-sideBar-background, #252526);
+  border-radius: 0px;
+
 }
 form.inquirer-gui .v-card:hover {
   border: 1px solid var(--vscode-sideBar-border, #0e639c);

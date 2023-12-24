@@ -317,7 +317,7 @@ export default {
         command.id = cmdOrEvent.target.getAttribute("command");
         command.params = cmdOrEvent.target.getAttribute("params");
       }
-      this.rpc.invoke("executeCommand", [command.id, command.params]);
+      this.rpc.invoke("executeCommand", [command.id, JSON.parse(JSON.stringify(command.params))]);
     },
     back() {
       return this.gotoStep(1); // go 1 step back

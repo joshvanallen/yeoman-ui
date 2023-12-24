@@ -69,6 +69,9 @@ header.v-toolbar .v-btn {
   color: var(--vscode-foreground, #cccccc);
   text-transform: none;
 }
+header.v-toolbar .v-btn {
+  color: var(--vscode-textLink-foreground, #3794ff) !important;
+}
 header.v-toolbar {
   border-bottom: 1px solid var(--vscode-editorWidget-background, #252526);
   box-shadow: none;
