@@ -91,7 +91,7 @@ div.v-stepper .v-stepper-item {
   padding-left: 0px;
   padding-top: 10px;
   padding-bottom: 10px;
-  opacity: unset;
+  opacity: 0.4;
   /* Step bullet  */
   .v-stepper-item__avatar {
     font-size: 0px;
@@ -120,6 +120,7 @@ div.v-stepper .v-stepper-item {
     text-align: left;
   }
   &--complete {
+    opacity: unset !important; // Overrides the default opacity of .v-stepper-item in case of complete step
     .v-stepper-item__title {
       color: var(
         --vscode-textLink-foreground,
@@ -140,6 +141,7 @@ div.v-stepper .v-stepper-item {
     }
   }
   &--selected {
+    opacity: 1 !important; // Overrides the default opacity of .v-stepper-item in case of selected step
     .v-stepper-item__avatar {
       background-color: transparent !important;
       border-color: var(
@@ -147,16 +149,6 @@ div.v-stepper .v-stepper-item {
         #616161
       ) !important; // Required since Vuetify adds border-color !important for selector `.v-application .primary`
     }
-  }
-  &--inactive {
-    .v-stepper-item__title,
-    .v-stepper-item__avatar {
-      background-color: var(
-        --vscode-editor-background,
-        #252526
-      ) !important; // Override Vuetifys theme specific selector `.theme--dark.v-stepper .v-stepper__step:not(.v-stepper__step--active):not(.v-stepper__step--complete):not(.v-stepper__step--error) .v-stepper__step__step`
-    }
-    opacity: 0.4;
   }
 }
 
