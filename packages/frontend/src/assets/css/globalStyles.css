@@ -49,6 +49,11 @@ div.v-application .theme--light.v-btn.v-btn--disabled .v-icon {
   opacity: unset !important;
 }
 
+/* Do not accept from vuetify ripple effect and the background style effect upon user click */
+.v-ripple__container {
+  display:none !important;
+}
+
 /* All inputs should have this background color unless it is in radio group */
 form.inquirer-gui :not(.v-radio-group)>.v-input__control {
   background-color: var(--vscode-input-background,#3c3c3c);
